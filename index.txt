@@ -1,0 +1,102 @@
+<?php
+require_once 'process.php';
+?>
+
+
+<?php 
+if(isset($_SESSION['message'])): ?>
+
+<div class="alert-<?=$_SESSION['msg-type']?>">
+
+<?php
+    echo $_SESSION['message'];
+    unset($_SESSION['message']);
+?>
+
+</div>
+<?php endif ?>
+
+
+
+
+<?php
+   $mysqli=new mysqli('localhost','root','crud')  or die(mysqli_error($mysqli->error));
+
+   $result=$mysqli->query("SELECT * FROM data")   or die($mysqli->error);
+?>
+
+    <table>
+    
+        <tr>
+            <th>Register No </th>
+            <th>Name</th>
+            <th>Options</th>
+        </tr>
+
+        <?php 
+           while($row=$result->fetch_assoc()):?>
+
+           <tr>
+               <td><?php echo $row['regno'];?></td>
+               <td><?php echo $row['name'];?></td>
+
+               <td>
+               <a href="index.php?edit=<?php echo $row['id'];?>" Edit </a>
+               <a href="process.php?delete=<?php echo $row['id'];?>" Update </a>
+               </td>
+           </tr>
+
+           <?php end while; 
+        ?>
+    </table>
+
+
+
+    <?php 
+       function pre_r($array)
+       {
+           echo '<pre>';
+           print_r($array);
+           echo '</pre>';
+
+       }
+    ?>
+
+
+
+
+
+<form action="process.php" method="POST">
+    <input type="hidden" name="id"  value="<?php echo $id; ?>">
+
+    <label>Register No</label>
+    <input type="text" name="regno" placeholder="Reg-No" required pattern="^[A-Z0-9]+" value="<?php echo $regno; ?>">
+
+    <label>Student Name</label>
+    <input type="text" name="name"   placeholder="Name" required pattern="^[A-Za-z]+" value="<?php echo $name; ?>">
+
+    <label>Class</label>
+    <input type="text" name="class" placeholder="Class" required pattern="^[A-Z0-9]+" value="<?php echo $class; ?>">
+
+    <label>Mobile</label>
+    <input type="text" name="mb"     placeholder="Mobile-No" required pattern="^[0-9]+" value="<?php echo $mb; ?>">
+
+    <label>Email</label>
+    <input type="text" name="email"  placeholder="Email-Id" required  value="<?php echo $email; ?>">
+
+
+
+    <?php if($update==true):
+    
+        <button type="submit" name="update"> UPDATE </button>
+
+        <?php else: ?>
+        
+        <button type="submit" name="save"> SAVE </button>
+
+    <?php else:
+    conn->close();
+    ?>
+
+
+
